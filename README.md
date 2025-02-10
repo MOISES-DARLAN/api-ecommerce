@@ -149,5 +149,5 @@ Remove um usuário do sistema.
    ```
 
 ## Autor
-Desenvolvido por **Sua Equipe** - 2025.
+Desenvolvido por **[Moisés Darlan](https://github.com/MOISES-DARLAN)** - 2025.
 
