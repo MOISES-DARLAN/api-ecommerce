@@ -1,37 +1,55 @@
 package br.com.minhaloja.ecommerce.controllers;
 
-import br.com.minhaloja.ecommerce.models.dtos.UserDTO;
+import br.com.minhaloja.ecommerce.dtos.UserDTO;
 import br.com.minhaloja.ecommerce.models.entidys.User;
-import br.com.minhaloja.ecommerce.models.repositorys.UserRepository;
+import br.com.minhaloja.ecommerce.services.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/users")
 public class UserController {
-
     @Autowired
-    UserRepository userRepository;
+    private UserService userService;
 
     @GetMapping
-    public List<User> findall(){
-        List<User> listUser = userRepository.findAll();
-        return listUser;
+    public ResponseEntity<List<User>> findall(){
+        List<User> listUsers = userService.findAll();
+        return ResponseEntity.status(HttpStatus.OK).body(listUsers);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<UserDTO> getUserById(@PathVariable Long id){
+        try{
+            User user = userService.findById(id);
+            UserDTO userDTO = new UserDTO(user);
+            return ResponseEntity.status(HttpStatus.OK).body(userDTO);
+        }
+        catch (ResponseStatusException e){
+            return ResponseEntity.status(e.getStatusCode()).body(null);
+        }
     }
 
     @PostMapping
-    public User cresteUser(@Valid @RequestBody UserDTO user){
-        User newUser = new User();
-        newUser.setCpf(user.getCpf());
-        newUser.setData_birth(user.getData_birth());
-        newUser.setName(user.getName());
-        newUser.setEmail(user.getEmail());
-        newUser.setPassword(user.getPassword());
-        return userRepository.save(newUser);
+    public ResponseEntity createUser(@Valid @RequestBody User user){
+        try {
+            UserDTO userDTO = userService.create(user);
+            return ResponseEntity.status(HttpStatus.CREATED).body(userDTO);
+
+        } catch (ResponseStatusException e) {
+            return ResponseEntity.status(e.getStatusCode()).body(e.getBody());
+        }
     }
+
+
+
 
 }
