@@ -130,13 +130,13 @@ Remove um usuário do sistema.
 #### Respostas
 > 200 ok
 
-> 409 User not found 
+> 404 User not found 
 
 ## Como Executar o Projeto
 
 1. Clone o repositório:
    ```bash
-   git clone https://github.com/seuusuario/ecommerce-api.git
+   git clone https://github.com/MOISES-DARLAN/api-ecommerce.git
    ```
 2. Acesse o diretório do projeto:
    ```bash
