@@ -49,6 +49,19 @@ public class UserController {
         }
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<UserDTO> updateUser(@PathVariable long id, @RequestBody User newUser){
+        try{
+            UserDTO user = userService.updateUser(id, newUser);
+            return ResponseEntity.ok(user);
+        } catch (ResponseStatusException e){
+            return ResponseEntity.status(e.getStatusCode()).body(null);
+        }
+    }
+
+
+
+
 
 
 

@@ -3,15 +3,11 @@ package br.com.minhaloja.ecommerce.services;
 import br.com.minhaloja.ecommerce.dtos.UserDTO;
 import br.com.minhaloja.ecommerce.models.entidys.User;
 import br.com.minhaloja.ecommerce.repositorys.UserRepository;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -43,9 +39,15 @@ public class UserService{
 
         User newUser = userRepository.save(user);
         return new UserDTO(newUser);
+    }
 
+    public UserDTO updateUser(long id, User newUser){
+        if(userRepository.existsById(id) && id == newUser.getCod_pessoa()){
+            userRepository.save(newUser);
+            return new UserDTO(newUser);
+        }
 
-
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Error: user not exist");
     }
 
 }
