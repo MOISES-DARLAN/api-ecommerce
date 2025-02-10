@@ -47,7 +47,19 @@ public class UserService{
             return new UserDTO(newUser);
         }
 
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Error: user not exist");
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Error: user does not exist");
     }
+
+    public String deleteUser(User user) {
+        if (userRepository.existsById(user.getCod_pessoa())) {
+            userRepository.delete(user);
+            return "User deleted";
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
+        }
+    }
+
+
+
 
 }

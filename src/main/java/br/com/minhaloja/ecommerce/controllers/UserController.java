@@ -59,6 +59,20 @@ public class UserController {
         }
     }
 
+    @DeleteMapping
+    public ResponseEntity<String> deleteUser(@RequestBody User user){
+        try {
+            userService.deleteUser(user);
+            return ResponseEntity.ok("Ok");
+        }
+        catch (ResponseStatusException e){
+            return ResponseEntity.status(e.getStatusCode()).body(e.getReason());
+        }
+
+    }
+
+
+
 
 
 
